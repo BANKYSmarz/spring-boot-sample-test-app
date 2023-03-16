@@ -7,5 +7,13 @@ pipeline {
       }
     }
 
+    stage('test') {
+      steps {
+        echo 'test d\'intégration'
+        echo 'test fonctionnel'
+        echo 'smoke test'
+      }
+    }
+
   }
 }
