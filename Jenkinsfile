@@ -1,38 +1,43 @@
 pipeline {
   agent any
   stages {
-    stage('build') {
+    stage('Build') {
       steps {
         echo 'build stage'
       }
     }
 
-    stage('test') {
+    stage('Test') {
       parallel {
-        stage('test') {
-          steps {
-            echo 'test d\'integration'
-          }
-        }
-
-        stage('test fonctionnel') {
-          steps {
-            echo 'test fonctionnel'
-          }
-        }
-
-        stage('smoke test') {
+        stage('smoke') {
           steps {
             echo 'smoke test'
+          }
+        }
+
+        stage('Integration') {
+          steps {
+            echo 'Functionnal'
+            sh 'mvn -Dtest="com.example.testingweb.integration.**" test'
+          }
+        }
+
+        stage('Functional') {
+          steps {
+            echo 'test fonctionnel termine'
+            sh 'mvn -Dtest="com.example.testingweb.functional.**" test'
           }
         }
 
       }
     }
 
-    stage('deploy') {
+    stage('Deploy') {
       steps {
-        echo 'deploy'
+        input 'Voulez-vous continuer?'
+        echo 'deployement demarer'
+        sh 'mvn -DskipTests install'
+        echo 'deployement termine'
       }
     }
 
